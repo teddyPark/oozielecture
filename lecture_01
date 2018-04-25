@@ -2,7 +2,25 @@
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_01/workflow.xml
+Hive 테이블 생성하기
+----------------------------------------------------------------------------------------------------------------------------
+[root@sandbox-hdp lecture_01]# beeline 
+beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
+
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE DATABASE lecture;
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE TABLE `lecture.u_data` (
+  userid INT,
+  movieid INT,
+  rating INT,
+  unixtime STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE;
+
+
+############################################################################################################################
+############################################################################################################################
+File : workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
@@ -22,10 +40,9 @@ File : /user/oozie/workflow/lecture_01/workflow.xml
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <jdbc-url>jdbc:hive2://localhost:10000/lecture</jdbc-url>
            <password>hive</password>
            <script>lib/load_datafile.hql</script>
-           <param>ETL_YMD=${TODAY_YMD}</param>
        </hive2>
        <ok to="end"/>
        <error to="Kill"/>
@@ -37,14 +54,14 @@ File : /user/oozie/workflow/lecture_01/workflow.xml
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_01/lib/load_datafile.hql
+File : lib/load_datafile.hql
 ----------------------------------------------------------------------------------------------------------------------------
-LOAD DATA INPATH ’/stage-data/recv/weblog/${ETL_YMD}/*.DAT INTO TABLE logtmp.weblog PARTITION etl_ymd=${ETL_YMD};
+LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
 ----------------------------------------------------------------------------------------------------------------------------
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_01/job.properties
+File : job.properties
 ----------------------------------------------------------------------------------------------------------------------------
 #
 #Tue Apr 24 10:31:14 KST 2018
