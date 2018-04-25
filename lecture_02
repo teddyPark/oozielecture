@@ -171,7 +171,7 @@ File : /user/oozie/workflow/lecture_02/workflow.xml
            <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
            <password>hive</password>
            <script>lib/copy_to_orc.hql</script>
-           <param>ETL_YEAR=${YEAR}</param>
+           <param>YEAR=${YEAR}</param>
        </hive2>
        <ok to="end"/>
        <error to="Kill"/>
@@ -184,7 +184,7 @@ File : /user/oozie/workflow/lecture_02/workflow.xml
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_02/lib/load_datafile.hql
+File : /user/oozie/workflow/lecture_02/lib/load_csvfile.hql
 ----------------------------------------------------------------------------------------------------------------------------
 LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE lecture.flight_data_tmp PARTITION(etl_year=${ETL_YEAR});
 ----------------------------------------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE lecture.fl
 File : /user/oozie/workflow/lecture_02/lib/copy_to_orc.hql
 ----------------------------------------------------------------------------------------------------------------------------
 INSERT OVERWRITE TABLE lecture.flight_data_orc 
-PARTITION (year=${ETL_YEAR})
+PARTITION (year='${ETL_YEAR}')
 SELECT
    month,
    day,
@@ -224,7 +224,7 @@ SELECT
    nas_delay,
    security_delay,
    late_aircraft_delay
-FROM lecture.flight_data_tmp WHERE etl_year = ${YEAR};
+FROM lecture.flight_data_tmp WHERE etl_year = '${YEAR}';
 ----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -241,7 +241,7 @@ queueName=default
 nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=
 jobTracker=sandbox-hdp.hortonworks.com\:8032
-YEAR=2001
+YEAR=2000
 ----------------------------------------------------------------------------------------------------------------------------
 
 ### oozie job 실행 방법
@@ -254,7 +254,35 @@ cd lecture_02
 3. oozie CLI command 실행
 oozie job -config job.properties -run
 
+4. oozie workflow job 확인
+oozie job -info {job_id}
+
+5. hive_action_2 오류 확인하기
+oozie job -info {job_id}@hive_action_2
+
+6. STDOUT/STDERR 확인하기
+http://sandbox-hdp.hortonworks.com:8088/proxy/{yarn application id}/
+
+7. hql 파일 수정 후 HDFS 에 업로드하기
+ * copy_to_orc.hql 파일의 ${ETL_YEAR} 를 ${YEAR}로 변경
+hadoop fs -put -f lib /user/oozie/workflow/lecture_02
+
+8. oozie job rerun
+oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true
+
+9. stage-data file 확인
+hadoop fs -ls -R /stage-data/RITA_Data/
+
+10. flight_data_tmp table 의 external location 확인
+hadoop fs -ls -R /user/hive/warehouse/lecture.db/flight_data_tmp
+
+11. hive 테이블 확인
+[root@sandbox-hdp lecture_02]# beeline -u jdbc:hive2://sandbox-hdp.hortonworks.com:10000/lecture -n hive -p hive
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_tmp WHERE etl_year=2000;
+
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_tmp WHERE year=2000;
+
+
+
 
 # data load
-LOAD DATA INPATH '/stage-data/RITA_Data/2000/*.csv' INTO TABLE lecture.flight_data_tmp PARTITION(etl_year=2000);
-
