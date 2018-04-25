@@ -125,3 +125,136 @@ CREATE EXTERNAL TABLE `lecture.flight_data_orc`(
  LOCATION
    'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/flight_data_orc';
 -------------------------------------------------------------------------------------------------------
+
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_02/workflow.xml
+----------------------------------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+   <action name="hive_action_1">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/load_csvfile.hql</script>
+           <param>ETL_YEAR=${YEAR}</param>
+       </hive2>
+       <ok to="hive_action_2"/>
+       <error to="Kill"/>
+   </action>
+   <action name="hive_action_2">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/copy_to_orc.hql</script>
+           <param>ETL_YEAR=${YEAR}</param>
+       </hive2>
+       <ok to="end"/>
+       <error to="Kill"/>
+    </action>
+
+   <end name="end"/>
+</workflow-app>
+
+----------------------------------------------------------------------------------------------------------------------------
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_02/lib/load_datafile.hql
+----------------------------------------------------------------------------------------------------------------------------
+LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE lecture.flight_data_tmp PARTITION(etl_year=${ETL_YEAR});
+----------------------------------------------------------------------------------------------------------------------------
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_02/lib/copy_to_orc.hql
+----------------------------------------------------------------------------------------------------------------------------
+INSERT OVERWRITE TABLE lecture.flight_data_orc 
+PARTITION (year=${ETL_YEAR})
+SELECT
+   month,
+   day,
+   day_of_week,
+   dep_time,
+   crs_dep_time,
+   arr_time,
+   crs_arr_time,
+   unique_carrier,
+   flight_num,
+   tail_num,
+   actual_elapsed_time,
+   crs_elapsed_time,
+   air_time,
+   arr_delay,
+   dep_delay,
+   origin,
+   dest,
+   distance,
+   taxi_in,
+   taxi_out,
+   cancelled, 
+   cancellation_code, 
+   diverted,
+   carrier_delay,
+   weather_delay,
+   nas_delay,
+   security_delay,
+   late_aircraft_delay
+FROM lecture.flight_data_tmp WHERE etl_year = ${YEAR};
+----------------------------------------------------------------------------------------------------------------------------
+
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_02/job.properties
+----------------------------------------------------------------------------------------------------------------------------
+#
+#Tue Apr 24 10:31:14 KST 2018
+user.name=mapred
+oozie.use.system.libpath=true
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_02
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=
+jobTracker=sandbox-hdp.hortonworks.com\:8032
+YEAR=2001
+----------------------------------------------------------------------------------------------------------------------------
+
+### oozie job 실행 방법
+1. workflow 경로를 HDFS 로 복사
+hadoop fs -put (-f) lecture_02 /user/oozie/workflow/.
+
+2. job.properties 파일이 있는 경로로 이동.
+cd lecture_02
+
+3. oozie CLI command 실행
+oozie job -config job.properties -run
+
+
+# data load
+LOAD DATA INPATH '/stage-data/RITA_Data/2000/*.csv' INTO TABLE lecture.flight_data_tmp PARTITION(etl_year=2000);
+
