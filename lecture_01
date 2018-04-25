@@ -58,3 +58,13 @@ oozie.libpath=
 jobTracker=sandbox-hdp.hortonworks.com\:8032
 
 ----------------------------------------------------------------------------------------------------------------------------
+
+### oozie job 실행 방법
+1. workflow 경로를 HDFS 로 복사
+hadoop fs -put (-f) lecture_01 /user/oozie/workflow/.
+
+2. job.properties 파일이 있는 경로로 이동.
+cd lecture_01
+
+3. oozie CLI command 실행
+oozie job -config job.properties -run
