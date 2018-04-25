@@ -280,9 +280,4 @@ hadoop fs -ls -R /user/hive/warehouse/lecture.db/flight_data_tmp
 [root@sandbox-hdp lecture_02]# beeline -u jdbc:hive2://sandbox-hdp.hortonworks.com:10000/lecture -n hive -p hive
 0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_tmp WHERE etl_year=2000;
 
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_tmp WHERE year=2000;
-
-
-
-
-# data load
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_orc WHERE year=2000;
