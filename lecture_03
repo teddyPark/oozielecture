@@ -1,0 +1,45 @@
+
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_03/coordinator.xml
+----------------------------------------------------------------------------------------------------------------------------
+
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="RITA_coordinator" frequency="0 1 1 1 ?" start="2000-01-01T01:00+0900" end="2001-01-01T01:00+0900" timezone="Asia/Seoul">
+    <datasets>
+        <dataset name="data" frequency="${coord:months(12)}" initial-instance="2000-01-01T01:00+0900" timezone="Asia/Seoul">
+            <uri-template>hdfs://stage-data/RITA_Data/${YEAR}</uri-template>
+            <done-flag>_SUCCESS</done-flag>
+        </dataset>
+    </datasets>
+    <controls>
+        <timeout>60</timeout>
+    </controls>
+    <action>
+        <workflow>
+            <app-path>/user/oozie/workflow/lecture_02/workflow.xml</app-path>
+            <configuration>
+                <property>
+                    <name>YEAR</name>
+                    <value>${coord:formatTime(coord:nominalTime(),'yyyy')}</value>
+                </property>
+            </configuration>
+        </workflow>
+    </action>
+</coordinator-app>
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_03/job.properties
+----------------------------------------------------------------------------------------------------------------------------
+#
+#Tue Apr 24 10:31:14 KST 2018
+user.name=mapred
+oozie.use.system.libpath=true
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_02
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=
+jobTracker=sandbox-hdp.hortonworks.com\:8032
+----------------------------------------------------------------------------------------------------------------------------
+
