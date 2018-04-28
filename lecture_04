@@ -27,7 +27,6 @@ LOCATION
 File : /user/oozie/workflow/lecture_04/workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="sqoop_action_1"/>
@@ -47,10 +46,30 @@ File : /user/oozie/workflow/lecture_04/workflow.xml
            </configuration>
            <command>import --connect jdbc:mysql://localhost:3306/employees --driver com.mysql.jdbc.Driver --username sqoop --password hadoop --table employees --target-dir /stage-data/employees --split-by 1 --delete-target-dir</command>
        </sqoop>
-       <ok to="end"/>
+       <ok to="hive_action_1"/>
        <error to="Kill"/>
    </action>
+   <action name="hive_action_1">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/ctas_orc.hql</script>
+       </hive2>
+       <ok to="end"/>
+       <error to="Kill"/>
+    </action>
+   <end name="end"/>
 </workflow-app>
+
 
 
 ############################################################################################################################
@@ -68,3 +87,11 @@ queueName=default
 nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
 jobTracker=sandbox-hdp.hortonworks.com\:8032
+
+
+############################################################################################################################
+############################################################################################################################
+File : /user/oozie/workflow/lecture_04/lib/ctas_orc.hql
+----------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE employees_orc STORED AS ORC AS SELECT * from employees ;
