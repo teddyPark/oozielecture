@@ -93,5 +93,5 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_04/lib/ctas_orc.hql
 ----------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE employees_orc STORED AS ORC AS SELECT * from employees ;
+DROP TABLE IF EXISTS employees.employees_orc 
+CREATE TABLE employees.employees_orc STORED AS ORC AS SELECT * from employees.employees ;
