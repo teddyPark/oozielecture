@@ -1,3 +1,26 @@
+############################################################################################################################
+############################################################################################################################
+beeline 접속 후 Database 와 Table 만들기
+----------------------------------------------------------------------------------------------------------------------------
+
+CREATE DATABASE employees;
+
+CREATE EXTERNAL TABLE employees.employees (
+   emp_no int,
+   birth_date date,
+   first_name string,
+   last_name string,
+   gender string,
+   hire_date date)
+ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY ','
+STORED AS INPUTFORMAT
+   'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
+   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+   'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/employees';
+
 
 ############################################################################################################################
 ############################################################################################################################
