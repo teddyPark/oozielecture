@@ -40,7 +40,7 @@ File : /user/oozie/workflow/lecture_05/workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+<workflow-app name="lecture_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="hive_action_1"/>
    <kill name="Kill">
@@ -126,7 +126,7 @@ WHERE    etl_ymd=${YMD};
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_05/coordiantor.xml
 ----------------------------------------------------------------------------------------------------------------------------
-<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="RITA_coordinator" frequency="10 0 * * *" 
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" frequency="10 0 * * *" 
          start="2018-04-02T00:00+0900" end="2020-12-31T02:00+0900" timezone="Asia/Seoul">
     <controls>
         <timeout>86400</timeout>
