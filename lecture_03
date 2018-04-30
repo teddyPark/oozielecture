@@ -24,7 +24,7 @@ LOCATION
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_04/workflow.xml
+File : /user/oozie/workflow/lecture_03/workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
@@ -74,7 +74,7 @@ File : /user/oozie/workflow/lecture_04/workflow.xml
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_04/job.properties
+File : /user/oozie/workflow/lecture_03/job.properties
 ----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -82,7 +82,7 @@ File : /user/oozie/workflow/lecture_04/job.properties
 #Tue Apr 24 10:31:14 KST 2018
 user.name=mapred
 oozie.use.system.libpath=true
-oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_04
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_03
 queueName=default
 nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
@@ -91,7 +91,7 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_04/lib/ctas_orc.hql
+File : /user/oozie/workflow/lecture_03/lib/ctas_orc.hql
 ----------------------------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS employees.employees_orc 
 CREATE TABLE employees.employees_orc STORED AS ORC AS SELECT * from employees.employees ;
