@@ -9,8 +9,7 @@ https://ko.hortonworks.com/tutorial/learning-the-ropes-of-the-hortonworks-sandbo
 
 ## 2. set oozie timezone
 1. oozie > configs > custom oozie-site 
-2. Add property
-   oozie.processing.timezone=GMT+0900
+2. Add property.. >  oozie.processing.timezone=GMT+0900  
 
 
 ## extjs-2.2.zip
