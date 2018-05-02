@@ -8,14 +8,16 @@ Hive 테이블 생성하기
 beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
 
 0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE DATABASE lecture;
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE TABLE `lecture.u_data` (
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE EXTERNAL TABLE `lecture.u_data` (
   userid INT,
   movieid INT,
   rating INT,
   unixtime STRING)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
-STORED AS TEXTFILE;
+STORED AS TEXTFILE
+ LOCATION
+   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
 
 ############################################################################################################################
 ############################################################################################################################
