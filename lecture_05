@@ -1,4 +1,5 @@
 
+CREATE DATABASE weblogs;
 
 CREATE EXTERNAL TABLE `access`(
    `host` string,                                                                       
