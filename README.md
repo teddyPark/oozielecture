@@ -13,10 +13,11 @@ https://ko.hortonworks.com/tutorial/learning-the-ropes-of-the-hortonworks-sandbo
 
 
 ## 3. copy sample data
-1. unzip sample_data.zip
-2. cd sample_data
-3. hadoop fs -mkdir /stage-data
-4. hadoop fs -put * /stage-data/.
+1. unzip stage-data.zip
+2. hadoop fs -put stage-data /.
+3. sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
+4. hadoop fs -ls -R /stage-data
+
 
 ## extjs-2.2.zip
 cp ext-2.2.zip /usr/hdp/current/oozie-server/libext/.
