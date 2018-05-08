@@ -26,7 +26,24 @@ sqoop import --connect jdbc:mysql://localhost:3306/employees --driver com.mysql.
 
 sqoop import --connect jdbc:mysql://localhost:3306/employees --driver com.mysql.jdbc.Driver --username sqoop --password hadoop --tablsalaries --target-dir '/stage-data/employees/salaries' --split-by 1
 
-
+CREATE EXTERNAL TABLE `access`(
+   `host` string,                                                                       
+   `identity` string,                                                                   
+   `userid` string,                                                                     
+   `accesstime` string,                                                              
+   `request` string,                                                                    
+   `status` string,                                                                     
+   `size` string,  `referer` string,   `agent` string )
+ PARTITIONED BY ( etl_ymd string )
+ ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY ' '
+ STORED AS INPUTFORMAT                                                                  
+   'org.apache.hadoop.mapred.TextInputFormat'
+ OUTPUTFORMAT                                                                           
+   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'                         
+ LOCATION                                                                               
+   'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblog/access/';
+   
 # python pip install
 hadoop fs -touchz /stage-data/weblog/access/20180401/_SUCCESS /stage-data/weblog/access/20180402/_SUCCESS /stage-data/weblog/access/20180403/_SUCCESS /stage-data/weblog/access/20180404/_SUCCESS /stage-data/weblog/access/20180405/_SUCCESS /stage-data/weblog/access/20180406/_SUCCESS /stage-data/weblog/access/20180407/_SUCCESS /stage-data/weblog/access/20180408/_SUCCESS /stage-data/weblog/access/20180409/_SUCCESS /stage-data/weblog/access/20180410/_SUCCESS
 hadoop fs -touchz /stage-data/weblog/access/20180411/_SUCCESS /stage-data/weblog/access/20180412/_SUCCESS /stage-data/weblog/access/20180413/_SUCCESS /stage-data/weblog/access/20180414/_SUCCESS /stage-data/weblog/access/20180415/_SUCCESS /stage-data/weblog/access/20180416/_SUCCESS /stage-data/weblog/access/20180417/_SUCCESS /stage-data/weblog/access/20180418/_SUCCESS /stage-data/weblog/access/20180419/_SUCCESS /stage-data/weblog/access/20180420/_SUCCESS
