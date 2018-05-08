@@ -194,7 +194,7 @@ LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE lecture.fl
 File : /user/oozie/workflow/lecture_02/lib/copy_to_orc.hql
 ----------------------------------------------------------------------------------------------------------------------------
 INSERT OVERWRITE TABLE lecture.flight_data_orc 
-PARTITION (year='${ETL_YEAR}')
+PARTITION (year='${YEAR}')
 SELECT
    month,
    day,
