@@ -18,7 +18,7 @@ CREATE EXTERNAL TABLE `access`(
  OUTPUTFORMAT                                                                           
    'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'                         
  LOCATION                                                                               
-   'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/access';  
+   'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblog/access';  
 
 CREATE TABLE `access_orc`(
    `host` string,
