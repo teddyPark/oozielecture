@@ -39,7 +39,12 @@ File : /user/oozie/workflow/lecture_06/coordinator.xml
     <controls>
         <timeout>1440</timeout>
     </controls>
-
+   <datasets>
+        <dataset name="data" frequency="1440" initial-instance="2018-04-01T00:00+0900" timezone="Asia/Seoul">
+            <uri-template>hdfs://sandbox-hdp.hortonworks.com/stage-data/weblog/access/${YEAR}${MONTH}${DAY}</uri-template>
+            <done-flag>_DONE</done-flag>
+        </dataset>
+   <datasets>
 </coordinator-app>
  
 ############################################################################################################################
