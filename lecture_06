@@ -45,6 +45,9 @@ File : /user/oozie/workflow/lecture_06/coordinator.xml
             <done-flag>_DONE</done-flag>
         </dataset>
    <datasets>
+   
+   
+   
 </coordinator-app>
  
 ############################################################################################################################
