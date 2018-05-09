@@ -19,14 +19,29 @@ SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY ho
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_06/workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
-   
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="lecture_06" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+
+
+   <end name="end"/>
+</workflow-app>   
    
 ############################################################################################################################
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_06/coordinator.xml
 ----------------------------------------------------------------------------------------------------------------------------   
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="stat_weblog_coordinator" frequency="10 0 * * *" start="2018-04-01T00:00+0900" end="2020-12-31T02:00+0900" timezone="Asia/Seoul">
+    <controls>
+        <timeout>1440</timeout>
+    </controls>
 
-
+</coordinator-app>
+ 
 ############################################################################################################################
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_06/coordinator.properties
