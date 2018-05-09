@@ -60,6 +60,18 @@ WHERE etl_ymd=${YMD};
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_05/workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="lecture_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+
+
+
+   <end name="end"/>
+</workflow-app>
 
 
 
@@ -74,8 +86,10 @@ File : /user/oozie/workflow/lecture_05/workflow.properties
 ############################################################################################################################
 File : /user/oozie/workflow/lecture_05/coordiantor.xml
 ----------------------------------------------------------------------------------------------------------------------------
+<coordinator-app xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" frequency=" " start=" " end=" " timezone=" ">
 
 
+</coordinator-app>
 
 ############################################################################################################################
 ############################################################################################################################
