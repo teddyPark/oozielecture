@@ -9,7 +9,7 @@ CREATE EXTERNAL TABLE `weblogs.stat_access`(
    
 ############################################################################################################################
 ############################################################################################################################
-File : /user/oozie/workflow/lecture_05/lib/stat_accesslog.hql
+File : /user/oozie/workflow/lecture_06/lib/stat_accesslog.hql
 ----------------------------------------------------------------------------------------------------------------------------
 INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd=${YMD})
 SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY host ORDER BY count DESC;
