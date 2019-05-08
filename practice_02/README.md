@@ -35,24 +35,30 @@
 28	SecurityDelay	    in minutes
 29	LateAircraftDelay	    in minutes
 </pre>
-1. File 내용 확인하기
-cd RITA_Data
+
+1.File 내용 확인하기
+------------------------------------------
+<pre><code>cd RITA_Data
 head 2000/2000.csv
+</code></pre>
 
-1. HDFS 로 업로드 하기
-hadoop fs -put RITA_Data /stage-data/.
+2.HDFS 로 업로드 하기
+-----------------------------------------
+<pre><code>hadoop fs -put RITA_Data /stage-data/.
+</code></pre>
 
-2. file 확인하기
-hadoop fs -ls -R /stage-data/RITA_Data
+3.file 확인하기
+-------------------------------------------
+<pre><code>hadoop fs -ls -R /stage-data/RITA_Data
+</code></pre>
 
-3. Hive 테이블 생성하기
+4.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------
-beeline 
-!connect jdbc:hive2://localhost:10000/default
+<pre><code>beeline 
+!connect jdbc:hive2://localhost:10000/practice
+</code></pre>
 
-use lecture;
-CREATE DATABASE lecture;
-CREATE EXTERNAL TABLE `lecture.flight_data_tmp`(
+<pre><code>CREATE EXTERNAL TABLE practice.flight_data_tmp (
    `year` int,
    `month` int,
    `day` int,       
@@ -90,9 +96,10 @@ CREATE EXTERNAL TABLE `lecture.flight_data_tmp`(
  OUTPUTFORMAT
    'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
  LOCATION
-   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/flight_data_tmp';
-   
-CREATE EXTERNAL TABLE `lecture.flight_data_orc`(
+   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/practice.db/flight_data_tmp';
+</code></pre>
+
+<pre><code>CREATE EXTERNAL TABLE practice.flight_data_orc (
    `month` int,
    `day` int,       
    `day_of_week` int,
@@ -124,16 +131,13 @@ CREATE EXTERNAL TABLE `lecture.flight_data_orc`(
  PARTITIONED BY (`year` string)
  STORED AS ORC
  LOCATION
-   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/flight_data_orc';
--------------------------------------------------------------------------------------------------------
+   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/practice.db/flight_data_orc';
+</code></pre>
 
-
-############################################################################################################################
-############################################################################################################################
-File : /user/oozie/workflow/lecture_02/workflow.xml
+5.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+<workflow-app name="practice_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="hive_action_1"/>
    <kill name="Kill">
@@ -150,7 +154,7 @@ File : /user/oozie/workflow/lecture_02/workflow.xml
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
            <password>hive</password>
            <script>lib/load_csvfile.hql</script>
            <param>ETL_YEAR=${YEAR}</param>
@@ -181,20 +185,13 @@ File : /user/oozie/workflow/lecture_02/workflow.xml
    <end name="end"/>
 </workflow-app>
 
+6.Library File(lib/load_csvfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
+<pre><code>LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE practice.flight_data_tmp PARTITION(etl_year=${ETL_YEAR});
+</code></pre>
 
-############################################################################################################################
-############################################################################################################################
-File : /user/oozie/workflow/lecture_02/lib/load_csvfile.hql
-----------------------------------------------------------------------------------------------------------------------------
-LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE lecture.flight_data_tmp PARTITION(etl_year=${ETL_YEAR});
-----------------------------------------------------------------------------------------------------------------------------
-
-############################################################################################################################
-############################################################################################################################
-File : /user/oozie/workflow/lecture_02/lib/copy_to_orc.hql
-----------------------------------------------------------------------------------------------------------------------------
-INSERT OVERWRITE TABLE lecture.flight_data_orc 
+7.Library File(lib/copy_to_orc.hql) 생성
+<pre><code>INSERT OVERWRITE TABLE lecture.flight_data_orc 
 PARTITION (year='${YEAR}')
 SELECT
    month,
@@ -225,60 +222,61 @@ SELECT
    nas_delay,
    security_delay,
    late_aircraft_delay
-FROM lecture.flight_data_tmp WHERE etl_year = '${YEAR}';
-----------------------------------------------------------------------------------------------------------------------------
+FROM practice.flight_data_tmp WHERE etl_year = '${YEAR}';
+</code></pre>
 
-
-############################################################################################################################
-############################################################################################################################
-File : /user/oozie/workflow/lecture_02/job.properties
+8.Job Porpreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-#
-#Tue Apr 24 10:31:14 KST 2018
-user.name=mapred
+<pre><code>user.name=mapred
 oozie.use.system.libpath=true
-oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_02
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_02
 queueName=default
 nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=
 jobTracker=sandbox-hdp.hortonworks.com\:8032
 YEAR=2000
+</code></pre>
+
+9.oozie job 실행
 ----------------------------------------------------------------------------------------------------------------------------
-
-### oozie job 실행 방법
 1. workflow 경로를 HDFS 로 복사
-hadoop fs -put (-f) lecture_02 /user/oozie/workflow/.
+<pre><code>hadoop fs -put -f practice_02 /user/oozie/workflow/.
+</code></pre>
 
-2. job.properties 파일이 있는 경로로 이동.
-cd lecture_02
+2. oozie CLI command 실행
+<pre><code>oozie job -config job.properties -run
+</code></pre>
 
-3. oozie CLI command 실행
-oozie job -config job.properties -run
+3. oozie workflow job 확인
+<pre><code>oozie job -info {job_id}
+</code></pre>
 
-4. oozie workflow job 확인
-oozie job -info {job_id}
+4. hive_action_2 오류 확인하기
+<pre><code>oozie job -info {job_id}@hive_action_2
+</code></pre>
 
-5. hive_action_2 오류 확인하기
-oozie job -info {job_id}@hive_action_2
-
-6. STDOUT/STDERR 확인하기
+5. STDOUT/STDERR 확인하기
 http://sandbox-hdp.hortonworks.com:8088/proxy/{yarn application id}/
 
-7. hql 파일 수정 후 HDFS 에 업로드하기
+6. hql 파일 수정 후 HDFS 에 업로드하기
  * copy_to_orc.hql 파일의 ${ETL_YEAR} 를 ${YEAR}로 변경
-hadoop fs -put -f lib /user/oozie/workflow/lecture_02
+<pre><code>hadoop fs -put -f lib /user/oozie/workflow/practice_02
+</code></pre>
 
-8. oozie job rerun
-oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true
+7. oozie job rerun
+<pre><code>oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true
+</code></pre>
 
-9. stage-data file 확인
-hadoop fs -ls -R /stage-data/RITA_Data/
+8. stage-data file 확인
+<pre><code>hadoop fs -ls -R /stage-data/RITA_Data/
+</code></pre>
 
-10. flight_data_tmp table 의 external location 확인
-hadoop fs -ls -R /user/hive/warehouse/lecture.db/flight_data_tmp
+9. flight_data_tmp table 의 external location 확인
+<pre><code>hadoop fs -ls -R /user/hive/warehouse/lecture.db/flight_data_tmp
+</code></pre>
 
-11. hive 테이블 확인
-[root@sandbox-hdp lecture_02]# beeline -u jdbc:hive2://sandbox-hdp.hortonworks.com:10000/lecture -n hive -p hive
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_tmp WHERE etl_year=2000;
-
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM lecture.flight_data_orc WHERE year=2000;
+10. hive 테이블 확인
+<pre><code>[root@sandbox-hdp practice_02]# beeline -u jdbc:hive2://sandbox-hdp.hortonworks.com:10000/practice -n hive -p hive
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM practice.flight_data_tmp WHERE etl_year=2000;
+0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> SELECT count(*) FROM practice.flight_data_orc WHERE year=2000;
+</code></pre>
