@@ -62,17 +62,46 @@ CREATE TABLE weblogs.access_log_orc(
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
    <action name="hive_action_1">
-
-     // hive action #1 작성
-
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
+           <password>hive</password>
+           <script>lib/load_logfile.hql</script>
+           <param>ETL_YMD=${YMD}</param>
+       </hive2>
+       <ok to="hive_action_2"/>
+       <error to="Kill"/>
    </action>
    <action name="hive_action_2">
-
-     // hive action #2 작성
-
-   </action>
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/copy_to_orc.hql</script>
+           <param>YMD=${YMD}</param>
+       </hive2>
+       <ok to="end"/>
+       <error to="Kill"/>
+    </action>
    <end name="end"/>
 </workflow-app>
+
 ```
 
 4.Library File(lib/load_logfile.hql) 생성
@@ -99,10 +128,14 @@ WHERE etl_ymd=${YMD};
 
 6.Job Propreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-
-  // job.properties 작성
-  
+<pre><code>user.name=mapred
+oozie.use.system.libpath=true
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_05
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
+jobTracker=sandbox-hdp.hortonworks.com\:8032
+YMD=20180401
 </code></pre>
 
 
