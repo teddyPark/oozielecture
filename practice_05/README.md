@@ -80,8 +80,10 @@ CREATE TABLE `weblogs.access_orc`(
 4.Library File(lib/load_logfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```sql
---LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log PARTITION(etl_ymd=${ETL_YMD});
-ALTER TABLE access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION '/stage-data/weblog/access/${ETL_YMD}';
+--LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log 
+--       PARTITION(etl_ymd=${ETL_YMD});
+ALTER TABLE access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION  
+         '/stage-data/weblog/access/${ETL_YMD}';
 ```
 
 5.Library File(lib/copy_to_orc.hql) 생성
@@ -109,7 +111,8 @@ WHERE etl_ymd=${YMD};
 7.Coordinator File(coordinator.xml) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```xml
-<coordinator-app xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" frequency=" " start=" " end=" " timezone=" ">
+<coordinator-app xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" 
+                 frequency=" " start=" " end=" " timezone=" ">
 
    // coordinator.xml 작성
    
