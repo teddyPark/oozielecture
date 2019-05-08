@@ -6,9 +6,7 @@ Virtual box 접속을 위한 hosts 설정
 
 C:\Windows\System32\drivers\etc\hosts 파일을 관리자 권한으로 open 하고 아래의 host 를 추가하고 저장
 
-<pre><code>
- 127.0.0.1    sandbox-hdp.hortonworks.com
-</code></pre>
+<pre><code> 127.0.0.1    sandbox-hdp.hortonworks.com </code></pre>
 
 
 Virtual box 접속하기
@@ -17,9 +15,7 @@ Virtual box 접속하기
 1. Sandbox-hdp Terminal 접속(SSH)
 
 id : root
-
 password : hadoop
-
 port : 2222
 
 > ssh -p 2222 root@sanbox-hdp.hortonworks.com 
