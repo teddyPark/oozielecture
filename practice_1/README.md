@@ -23,7 +23,7 @@ LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db
 
 Workflow File : workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
@@ -52,8 +52,8 @@ Workflow File : workflow.xml
     </action>
    <end name="end"/>
 </workflow-app>
-```xml
-</code></pre>
+```
+
 
 
 Library File : lib/load_datafile.hql
