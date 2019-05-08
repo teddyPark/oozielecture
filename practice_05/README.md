@@ -15,8 +15,8 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 
 2.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------------------------
-
-<pre><code>CREATE DATABASE weblogs;
+```sql
+CREATE DATABASE weblogs;
 
 CREATE EXTERNAL TABLE weblogs.access(
    `host` string,                                                                       
@@ -37,7 +37,7 @@ CREATE EXTERNAL TABLE weblogs.access(
    'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'                         
  LOCATION                                                                               
    'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblog/access';  
-</code></pre>
+```
 
 <pre><code>// new table schema
 CREATE EXTERNAL TABLE IF NOT EXISTS raw_access_log(
