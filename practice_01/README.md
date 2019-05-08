@@ -95,9 +95,9 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 ----------------------------------------------------------------------------------------------------------------------------
 
 1. workflow 경로를 HDFS 로 복사
-<pre><code>hadoop fs -put -f practice_01 /user/oozie/workflow/.
+<pre><code>[root@sandbox-hdp practice_01]# hadoop fs -put -f practice_01 /user/oozie/workflow/.
 </code></pre>
 
 2. oozie job run CLI command 실행
-<pre><code>oozie job -config job.properties -run
+<pre><code>[root@sandbox-hdp practice_01]# oozie job -config job.properties -run
 </code></pre>
