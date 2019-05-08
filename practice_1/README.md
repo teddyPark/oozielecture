@@ -25,6 +25,7 @@ chown stage-data files
 Workflow File : workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
+
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
@@ -52,19 +53,18 @@ Workflow File : workflow.xml
     </action>
    <end name="end"/>
 </workflow-app>
+
 </code></pre>
 
 
 Library File : lib/load_datafile.hql
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
+<pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
 </code></pre>
 
 File : job.properties
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-user.name=mapred
+<pre><code>user.name=mapred
 TODAY_YMD=20180507
 oozie.use.system.libpath=true
 oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_01
@@ -79,16 +79,13 @@ oozie job 실행 방법
 ----------------------------------------------------------------------------------------------------------------------------
 
 1. workflow 경로를 HDFS 로 복사
-<pre><code>
-hadoop fs -put (-f) lecture_01 /user/oozie/workflow/.
+<pre><code>hadoop fs -put (-f) lecture_01 /user/oozie/workflow/.
 </code></pre>
 
 2. job.properties 파일이 있는 경로로 이동.
-<pre><code>
-cd lecture_01
+<pre><code>cd lecture_01
 </code></pre>
 
 3. oozie CLI command 실행
-<pre><code>
-oozie job -config job.properties -run
+<pre><code>oozie job -config job.properties -run
 </code></pre>
