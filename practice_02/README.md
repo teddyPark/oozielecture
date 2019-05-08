@@ -192,6 +192,7 @@
 </code></pre>
 
 7.Library File(lib/copy_to_orc.hql) 생성
+----------------------------------------------------------------------------------------------------------------------------
 <pre><code>INSERT OVERWRITE TABLE lecture.flight_data_orc 
 PARTITION (year='${YEAR}')
 SELECT
