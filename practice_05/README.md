@@ -18,30 +18,8 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 ```sql
 CREATE DATABASE weblogs;
 
-CREATE EXTERNAL TABLE weblogs.access(
-   `host` string,                                                                       
-   `identity` string,                                                                   
-   `userid` string,                                                                     
-   `accesstime` string,                                                              
-   `request` string,                                                                    
-   `status` string,                                                                     
-   `size` string,                                                                       
-   `referer` string,                                                                    
-   `agent` string)
- PARTITIONED BY ( etl_ymd string )
- ROW FORMAT DELIMITED
-   FIELDS TERMINATED BY ' '
- STORED AS INPUTFORMAT                                                                  
-   'org.apache.hadoop.mapred.TextInputFormat'
- OUTPUTFORMAT                                                                           
-   'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'                         
- LOCATION                                                                               
-   'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblog/access';  
-```
-
-```sql
 // new table schema
-CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.raw_access_log(
+CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.access_log(
   remote_host STRING,
   remote_logname STRING,
   remote_user STRING,
@@ -50,17 +28,13 @@ CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.raw_access_log(
   http_status STRING,
   bytes STRING
 )
-PARTITIONED BY (site string, log_date string)
+PARTITIONED BY (etl_ymd string)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
 WITH SERDEPROPERTIES (
   "input.regex" = "([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)",
   "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s"
 );
 
-LOAD DATA INPATH "/tmp/hive/weblogs/metatron_app_access_log-${yyyymmdd}" 
-   OVERWRITE INTO TABLE metatron_weblog.raw_access_log 
-   PARTITION (site='metatron.app',log_date='${yyyymmdd}');
-   
 CREATE TABLE `weblogs.access_orc`(
    `host` string,
    `identity` string,
@@ -87,7 +61,7 @@ CREATE TABLE `weblogs.access_orc`(
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
 
-
+     // workflow xml 작성
 
    <end name="end"/>
 </workflow-app>
@@ -96,8 +70,8 @@ CREATE TABLE `weblogs.access_orc`(
 4.Library File(lib/load_logfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```sql
---LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access PARTITION(etl_ymd=${ETL_YMD});
-ALTER TABLE access ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION '/stage-data/weblog/access/${ETL_YMD}';
+--LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log PARTITION(etl_ymd=${ETL_YMD});
+ALTER TABLE access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION '/stage-data/weblog/access/${ETL_YMD}';
 ```
 
 5.Library File(lib/copy_to_orc.hql) 생성
@@ -109,7 +83,7 @@ INSERT OVERWRITE TABLE weblogs.access_orc PARTITION (ymd=${YMD})
 SELECT host, identity, userid,
          cast(from_unixtime(UNIX_TIMESTAMP(accesstime,'[dd/MMM/yyyy:HH:mm:ss Z]')) as timestamp) as accesstime,
          request, status, size, referer, agent
-FROM weblogs.access
+FROM weblogs.access_log
 WHERE etl_ymd=${YMD};
 ```
 
@@ -117,6 +91,8 @@ WHERE etl_ymd=${YMD};
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 
+  // job.properties 작성
+  
 </code></pre>
 
 
@@ -125,7 +101,8 @@ WHERE etl_ymd=${YMD};
 ```xml
 <coordinator-app xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" frequency=" " start=" " end=" " timezone=" ">
 
-
+   // coordinator.xml 작성
+   
 </coordinator-app>
 ```
 
@@ -133,5 +110,7 @@ WHERE etl_ymd=${YMD};
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 
+   // coordinator-job.properties 작성
+   
 </code></pre>
 
