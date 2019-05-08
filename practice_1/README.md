@@ -1,11 +1,11 @@
-Hive 테이블 생성하기
+1. Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 [root@sandbox-hdp lecture_01]# beeline 
 beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
 
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE DATABASE lecture;
-0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE EXTERNAL TABLE `lecture.u_data` (
+CREATE DATABASE lecture; 
+CREATE EXTERNAL TABLE 'lecture.u_data' (
   userid INT,
   movieid INT,
   rating INT,
@@ -13,11 +13,10 @@ beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
- LOCATION
-   'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
+LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
 </code></pre>
 
-chown stage-data files
+2. 파일 소유자 변경 
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp lecture_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
 </code></pre>
@@ -25,7 +24,7 @@ chown stage-data files
 Workflow File : workflow.xml
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
-
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
@@ -53,7 +52,7 @@ Workflow File : workflow.xml
     </action>
    <end name="end"/>
 </workflow-app>
-
+```xml
 </code></pre>
 
 
