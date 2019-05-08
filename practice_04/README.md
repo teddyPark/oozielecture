@@ -101,3 +101,15 @@ Last Modified        : 2019-05-08 06:49 GMT
 First Missing Dependency : -
 ------------------------------------------------------------------------------------------------------------------------------------
 </code></pre>
+
+
+7.Missing Dependency 처리 2
+----------------------------------------------------------------------------------------------------------------------------
+<pre><code>[root@sandbox-hdp practice_04]# hadoop fs -touchz /stage-data/RITA_Data/2001/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2002/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2003/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2004/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2005/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2006/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2007/_SUCCESS
+hadoop fs -touchz /stage-data/RITA_Data/2008/_SUCCESS</code></pre>
