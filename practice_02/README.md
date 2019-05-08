@@ -193,7 +193,7 @@
 
 7.Library File(lib/copy_to_orc.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>INSERT OVERWRITE TABLE lecture.flight_data_orc 
+<pre><code>INSERT OVERWRITE TABLE practice.flight_data_orc 
 PARTITION (year='${YEAR}')
 SELECT
    month,
@@ -274,7 +274,7 @@ http://sandbox-hdp.hortonworks.com:8088/proxy/{yarn application id}/
 </code></pre>
 
 9. flight_data_tmp table 의 external location 확인
-<pre><code>hadoop fs -ls -R /user/hive/warehouse/lecture.db/flight_data_tmp
+<pre><code>hadoop fs -ls -R /user/hive/warehouse/practice.db/flight_data_tmp
 </code></pre>
 
 10. hive 테이블 확인
