@@ -78,7 +78,7 @@ show create table u_data;
 <pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE practice.u_data;
 </code></pre>
 
-6.Job Porpreties File(job.properties) 생성
+6.Job Propreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
 TODAY_YMD=20190523
