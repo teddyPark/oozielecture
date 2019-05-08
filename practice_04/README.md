@@ -2,7 +2,8 @@
 ----------------------------------------------------------------------------------------------------------------------------
 
 ```xml
-<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="RITA_coordinator" frequency="0 1 1 1 *" start="2000-01-01T01:00+0900" end="2008-01-01T02:00+0900" timezone="Asia/Seoul">
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="RITA_coordinator" 
+                 frequency="0 1 1 1 *" start="2000-01-01T01:00+0900" end="2008-01-01T02:00+0900" timezone="Asia/Seoul">
     <controls>
         <timeout>60</timeout>
     </controls>
