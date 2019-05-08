@@ -1,11 +1,21 @@
-1.Hive 테이블 생성하기
+1.Hive 접속하기
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 [root@sandbox-hdp lecture_01]# beeline 
-beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
+beeline> !connect jdbc:hive2://localhost:10000/default
+Connecting to jdbc:hive2://localhost:10000/default
+Enter username for jdbc:hive2://localhost:10000/default: hive
+Enter password for jdbc:hive2://localhost:10000/default: hive
+Connected to: Apache Hive (version 1.2.1000.2.6.4.0-91)
+Driver: Hive JDBC (version 1.2.1000.2.6.4.0-91)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+0: jdbc:hive2://localhost:10000/default>
 </code></pre>
 
 <pre><code>beeline -u jdbc:hive2://localhost:10000/default -n hive -p hive</code></pre>
+
+2.Hive 테이블 생성하기
+----------------------------------------------------------------------------------------------------------------------------
 
 <pre><code>
 CREATE DATABASE lecture; 
@@ -20,12 +30,12 @@ STORED AS TEXTFILE
 LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
 </code></pre>
 
-2.파일 소유자 변경 
+3.파일 소유자 변경 
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp lecture_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
 </code></pre>
 
-3.Workflow File(workflow.xml) 
+4.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
 
 ```xml
@@ -60,12 +70,12 @@ LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db
 
 
 
-4.Library File(lib/load_datafile.hql) 생성
+5.Library File(lib/load_datafile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
 </code></pre>
 
-5.Job Porpreties File(job.properties) 생성
+6.Job Porpreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
 TODAY_YMD=20180507
@@ -78,7 +88,7 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
 
 
-6.oozie job 실행
+7.oozie job 실행
 ----------------------------------------------------------------------------------------------------------------------------
 
 1. workflow 경로를 HDFS 로 복사
