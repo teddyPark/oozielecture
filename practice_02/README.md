@@ -1,8 +1,9 @@
-## The data comes originally from RITA where it is described in detail. You can download the data there, or from the bzipped csv files listed below. These files have derivable variables removed, are packaged in yearly chunks and have been more heavily compressed than the originals.
+> The data comes originally from RITA where it is described in detail. You can download the data there, or from the bzipped csv files listed below. These files have derivable variables removed, are packaged in yearly chunks and have been more heavily compressed than the originals.
 
-# ref : http://stat-computing.org/dataexpo/2009/the-data.html
+> ref : http://stat-computing.org/dataexpo/2009/the-data.html
 
 # Data description
+<pre>
   Name	          Description
 1	Year	          1987-2008
 2	Month	          1-12
@@ -33,7 +34,7 @@
 27	NASDelay	    in minutes
 28	SecurityDelay	    in minutes
 29	LateAircraftDelay	    in minutes
-
+</pre>
 1. File 내용 확인하기
 cd RITA_Data
 head 2000/2000.csv
