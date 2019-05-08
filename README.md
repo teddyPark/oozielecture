@@ -14,9 +14,11 @@ Virtual box 접속하기
 
 1. Sandbox-hdp Terminal 접속(SSH)
 
+<pre>
 id : root
 password : hadoop
 port : 2222
+</pre>
 
 > ssh -p 2222 root@sanbox-hdp.hortonworks.com 
 
