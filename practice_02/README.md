@@ -54,8 +54,7 @@ head 2000/2000.csv
 
 4.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------
-<pre><code>beeline 
-!connect jdbc:hive2://localhost:10000/practice
+<pre><code>[root@sandbox-hdp practice_02]# beeline -u jdbc:hive2://sandbox-hdp.hortonworks.com:10000/practice -n hive -p hive
 </code></pre>
 
 <pre><code>CREATE EXTERNAL TABLE practice.flight_data_tmp (
