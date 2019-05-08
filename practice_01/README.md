@@ -31,9 +31,12 @@ show tables;
 show create table u_data;
 </code></pre>
 
-3.파일 소유자 변경 
+3.데이터 파일을 HDFS 로 복사 
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>[root@sandbox-hdp practice_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
+<pre><code>[root@sandbox-hdp practice_01]# cd stage-data
+[root@sandbox-hdp practice_01]# hadoop fs -mkdir /stage-data
+[root@sandbox-hdp practice_01]# hadoop fs -put -f ml-100k /stage-data/.
+[root@sandbox-hdp practice_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
 </code></pre>
 
 4.Workflow File(workflow.xml) 
