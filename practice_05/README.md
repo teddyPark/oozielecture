@@ -18,7 +18,6 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 ```sql
 CREATE DATABASE weblogs;
 
-// new table schema
 CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.access_log(
   remote_host STRING,
   remote_logname STRING,
@@ -26,7 +25,9 @@ CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.access_log(
   request_time STRING,
   first_line STRING,
   http_status STRING,
-  bytes STRING
+  bytes STRING,
+  referer STRING,
+  agent STRING
 )
 PARTITIONED BY (etl_ymd string)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
@@ -35,14 +36,14 @@ WITH SERDEPROPERTIES (
   "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s"
 );
 
-CREATE TABLE `weblogs.access_orc`(
-   `host` string,
-   `identity` string,
-   `userid` string,
-   `accesstime` timestamp,
-   `request` string,
-   `status` string,
-   `size` string,
+CREATE TABLE weblogs.access_log_orc(
+   `remote_host` string,
+   `remote_logname` string,
+   `remote_user` string,
+   `request_time` timestamp,
+   `first_line` string,
+   `http_status` string,
+   `bytes` string,
    `referer` string,
    `agent` string)
  PARTITIONED BY ( ymd string )
@@ -88,10 +89,10 @@ ALTER TABLE weblogs.access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}'
 ```sql
 ALTER TABLE weblogs.access_orc DROP IF EXISTS PARTITION (ymd=${YMD});
 
-INSERT OVERWRITE TABLE weblogs.access_orc PARTITION (ymd=${YMD})
-SELECT host, identity, userid,
-         cast(from_unixtime(UNIX_TIMESTAMP(accesstime,'[dd/MMM/yyyy:HH:mm:ss Z]')) as timestamp) as accesstime,
-         request, status, size, referer, agent
+INSERT OVERWRITE TABLE weblogs.access_log_orc PARTITION (ymd=${YMD})
+SELECT remote_host, remote_logname, remote_user,
+         cast(from_unixtime(UNIX_TIMESTAMP(request_time,'[dd/MMM/yyyy:HH:mm:ss Z]')) as timestamp) as request_time,
+         first_line, http_status, bytes, referer, agent
 FROM weblogs.access_log
 WHERE etl_ymd=${YMD};
 ```
