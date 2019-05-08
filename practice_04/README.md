@@ -55,7 +55,7 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 <pre><code>[root@sandbox-hdp practice_04]# oozie job -config job.properties -run
 </code></pre>
 
-4.job info 로 job 상태 확인
+4.oozie job info 로 job 상태 확인(WAITING)
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp practice_04]# oozie job -info 0000000-190508063533169-oozie-oozi-C@1
 ID : 0000000-190508063533169-oozie-oozi-C@1
@@ -80,3 +80,24 @@ First Missing Dependency : hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/RI
 5.Missing Dependency 처리
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp practice_04]# hadoop fs -touchz /stage-data/RITA_Data/2000/_SUCCESS</code></pre>
+
+6.oozie job info 로 job 상태 확인(WAITING)
+----------------------------------------------------------------------------------------------------------------------------
+<pre><code>[root@sandbox-hdp practice_04]# oozie job -info 0000000-190508063533169-oozie-oozi-C@1
+ID : 0000000-190508063533169-oozie-oozi-C@1
+------------------------------------------------------------------------------------------------------------------------------------
+Action Number        : 1
+Console URL          : -
+Error Code           : -
+Error Message        : -
+External ID          : 0000001-190508063533169-oozie-oozi-W
+External Status      : -
+Job ID               : 0000000-190508063533169-oozie-oozi-C
+Tracker URI          : -
+Created              : 2019-05-08 06:39 GMT
+Nominal Time         : 1999-12-31 16:00 GMT
+Status               : RUNNING
+Last Modified        : 2019-05-08 06:49 GMT
+First Missing Dependency : -
+------------------------------------------------------------------------------------------------------------------------------------
+</code></pre>
