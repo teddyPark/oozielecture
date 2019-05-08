@@ -242,19 +242,19 @@ YEAR=2000
 9.oozie job 실행
 ----------------------------------------------------------------------------------------------------------------------------
 1. workflow 경로를 HDFS 로 복사
-<pre><code>hadoop fs -put -f practice_02 /user/oozie/workflow/.
+<pre><code>[root@sandbox-hdp practice_02]# hadoop fs -put -f practice_02 /user/oozie/workflow/.
 </code></pre>
 
 2. oozie CLI command 실행
-<pre><code>oozie job -config job.properties -run
+<pre><code>[root@sandbox-hdp practice_02]# oozie job -config job.properties -run
 </code></pre>
 
 3. oozie workflow job 확인
-<pre><code>oozie job -info {job_id}
+<pre><code>[root@sandbox-hdp practice_02]# oozie job -info {job_id}
 </code></pre>
 
 4. hive_action_2 오류 확인하기
-<pre><code>oozie job -info {job_id}@hive_action_2
+<pre><code>[root@sandbox-hdp practice_02]# oozie job -info {job_id}@hive_action_2
 </code></pre>
 
 5. STDOUT/STDERR 확인하기
@@ -262,19 +262,19 @@ http://sandbox-hdp.hortonworks.com:8088/proxy/{yarn application id}/
 
 6. hql 파일 수정 후 HDFS 에 업로드하기
  * copy_to_orc.hql 파일의 ${ETL_YEAR} 를 ${YEAR}로 변경
-<pre><code>hadoop fs -put -f lib /user/oozie/workflow/practice_02
+<pre><code>[root@sandbox-hdp practice_02]# hadoop fs -put -f lib /user/oozie/workflow/practice_02
 </code></pre>
 
 7. oozie job rerun
-<pre><code>oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true
+<pre><code>[root@sandbox-hdp practice_02]# oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true
 </code></pre>
 
 8. stage-data file 확인
-<pre><code>hadoop fs -ls -R /stage-data/RITA_Data/
+<pre><code>[root@sandbox-hdp practice_02]# hadoop fs -ls -R /stage-data/RITA_Data/
 </code></pre>
 
 9. flight_data_tmp table 의 external location 확인
-<pre><code>hadoop fs -ls -R /user/hive/warehouse/practice.db/flight_data_tmp
+<pre><code>[root@sandbox-hdp practice_02]# hadoop fs -ls -R /user/hive/warehouse/practice.db/flight_data_tmp
 </code></pre>
 
 10. hive 테이블 확인
