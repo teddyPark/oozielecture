@@ -16,8 +16,8 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 2.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------------------------
 
-<pre><code>CREATE DATABASE practice; 
-CREATE TABLE 'practice.u_data' (
+<pre><code>CREATE DATABASE practice;</code></pre> 
+<pre><code>CREATE TABLE practice.u_data (
   userid INT,
   movieid INT,
   rating INT,
@@ -25,6 +25,10 @@ CREATE TABLE 'practice.u_data' (
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE;
+</code></pre>
+<pre><code>use practice;
+show tables;
+show create table u_data;
 </code></pre>
 
 3.파일 소유자 변경 
