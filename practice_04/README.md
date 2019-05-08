@@ -11,7 +11,7 @@
     <datasets>
         <dataset name="data" frequency="${coord:months(12)}" initial-instance="2000-01-01T01:00+0900" 
                  timezone="Asia/Seoul">
-            <uri-template>hdfs://sandbox-hdp.hortonworks.com/stage-data/RITA_Data/${YEAR}</uri-template>
+            <uri-template>${nameNode}/stage-data/RITA_Data/${YEAR}</uri-template>
             <done-flag>_SUCCESS</done-flag>
         </dataset>
     </datasets>
