@@ -27,7 +27,7 @@ LOCATION
 
 3.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
-
+```xml
 <workflow-app name="practice_03" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="sqoop_action_1"/>
@@ -61,7 +61,7 @@ LOCATION
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
            <password>hive</password>
            <script>lib/ctas_orc.hql</script>
        </hive2>
@@ -70,6 +70,7 @@ LOCATION
     </action>
    <end name="end"/>
 </workflow-app>
+```
 
 4.Library File(lib/ctas_orc.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
