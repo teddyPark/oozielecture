@@ -57,7 +57,8 @@ WITH SERDEPROPERTIES (
   "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s"
 );
 
-LOAD DATA INPATH "/tmp/hive/weblogs/metatron_app_access_log-${yyyymmdd}" OVERWRITE INTO TABLE metatron_weblog.raw_access_log 
+LOAD DATA INPATH "/tmp/hive/weblogs/metatron_app_access_log-${yyyymmdd}" 
+   OVERWRITE INTO TABLE metatron_weblog.raw_access_log 
    PARTITION (site='metatron.app',log_date='${yyyymmdd}');
    
 CREATE TABLE `weblogs.access_orc`(
