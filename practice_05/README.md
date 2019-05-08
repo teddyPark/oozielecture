@@ -18,7 +18,7 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 
 <pre><code>CREATE DATABASE weblogs;
 
-CREATE EXTERNAL TABLE `weblogs.access`(
+CREATE EXTERNAL TABLE weblogs.access(
    `host` string,                                                                       
    `identity` string,                                                                   
    `userid` string,                                                                     
@@ -79,7 +79,7 @@ CREATE TABLE `weblogs.access_orc`(
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workflow-app name="lecture_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+<workflow-app name="practice_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="hive_action_1"/>
    <kill name="Kill">
