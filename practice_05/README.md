@@ -39,7 +39,8 @@ CREATE EXTERNAL TABLE weblogs.access(
    'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblog/access';  
 ```
 
-<pre><code>// new table schema
+```sql
+// new table schema
 CREATE EXTERNAL TABLE IF NOT EXISTS raw_access_log(
   remote_host STRING,
   remote_logname STRING,
@@ -71,8 +72,7 @@ CREATE TABLE `weblogs.access_orc`(
    `agent` string)
  PARTITIONED BY ( ymd string )
  STORED AS ORC;    
-   
-</code></pre>
+```
 
 3.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
@@ -94,13 +94,15 @@ CREATE TABLE `weblogs.access_orc`(
 
 4.Library File(lib/load_logfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>--LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access PARTITION(etl_ymd=${ETL_YMD});
+```sql
+--LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access PARTITION(etl_ymd=${ETL_YMD});
 ALTER TABLE access ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION '/stage-data/weblog/access/${ETL_YMD}';
-</code></pre>
- 
+```
+
 5.Library File(lib/copy_to_orc.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>ALTER TABLE weblogs.access_orc DROP IF EXISTS PARTITION (ymd=${YMD});
+```sql
+ALTER TABLE weblogs.access_orc DROP IF EXISTS PARTITION (ymd=${YMD});
 
 INSERT OVERWRITE TABLE weblogs.access_orc PARTITION (ymd=${YMD})
 SELECT host, identity, userid,
@@ -108,8 +110,7 @@ SELECT host, identity, userid,
          request, status, size, referer, agent
 FROM weblogs.access
 WHERE etl_ymd=${YMD};
-</code></pre>
-
+```
 
 6.Job Propreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
