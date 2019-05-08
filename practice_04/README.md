@@ -81,7 +81,7 @@ First Missing Dependency : hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/RI
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp practice_04]# hadoop fs -touchz /stage-data/RITA_Data/2000/_SUCCESS</code></pre>
 
-6.oozie job info 로 job 상태 확인(WAITING)
+6.oozie job info 로 job 상태 확인(RUNNING)
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp practice_04]# oozie job -info 0000000-190508063533169-oozie-oozi-C@1
 ID : 0000000-190508063533169-oozie-oozi-C@1
