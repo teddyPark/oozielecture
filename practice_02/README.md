@@ -181,7 +181,6 @@
        <ok to="end"/>
        <error to="Kill"/>
     </action>
-
    <end name="end"/>
 </workflow-app>
 ```
