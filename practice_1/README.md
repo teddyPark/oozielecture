@@ -1,9 +1,13 @@
-1. Hive 테이블 생성하기
+1.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 [root@sandbox-hdp lecture_01]# beeline 
 beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
+</code></pre>
 
+<pre><code>beeline -u jdbc:hive2://localhost:10000/default -n hive -p hive</code></pre>
+
+<pre><code>
 CREATE DATABASE lecture; 
 CREATE EXTERNAL TABLE 'lecture.u_data' (
   userid INT,
@@ -16,12 +20,12 @@ STORED AS TEXTFILE
 LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
 </code></pre>
 
-2. 파일 소유자 변경 
+2.파일 소유자 변경 
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp lecture_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
 </code></pre>
 
-Workflow File : workflow.xml
+3.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
 
 ```xml
@@ -56,12 +60,12 @@ Workflow File : workflow.xml
 
 
 
-Library File : lib/load_datafile.hql
+4.Library File(lib/load_datafile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
 </code></pre>
 
-File : job.properties
+5.Job Porpreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
 TODAY_YMD=20180507
@@ -74,11 +78,11 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
 
 
-oozie job 실행 방법
+6.oozie job 실행
 ----------------------------------------------------------------------------------------------------------------------------
 
 1. workflow 경로를 HDFS 로 복사
-<pre><code>hadoop fs -put (-f) lecture_01 /user/oozie/workflow/.
+<pre><code>hadoop fs -put (-f) practice_01 /user/oozie/workflow/.
 </code></pre>
 
 2. job.properties 파일이 있는 경로로 이동.
