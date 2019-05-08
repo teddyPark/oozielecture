@@ -17,15 +17,14 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 ----------------------------------------------------------------------------------------------------------------------------
 
 <pre><code>CREATE DATABASE practice; 
-CREATE EXTERNAL TABLE 'practice.u_data' (
+CREATE TABLE 'practice.u_data' (
   userid INT,
   movieid INT,
   rating INT,
   unixtime STRING)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
-STORED AS TEXTFILE
-LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/practice.db/u_data';
+STORED AS TEXTFILE;
 </code></pre>
 
 3.파일 소유자 변경 
@@ -89,13 +88,9 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 ----------------------------------------------------------------------------------------------------------------------------
 
 1. workflow 경로를 HDFS 로 복사
-<pre><code>hadoop fs -put (-f) practice_01 /user/oozie/workflow/.
+<pre><code>hadoop fs -put -f practice_01 /user/oozie/workflow/.
 </code></pre>
 
-2. job.properties 파일이 있는 경로로 이동.
-<pre><code>cd practice_01
-</code></pre>
-
-3. oozie CLI command 실행
+2. oozie job run CLI command 실행
 <pre><code>oozie job -config job.properties -run
 </code></pre>
