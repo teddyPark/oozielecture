@@ -43,3 +43,14 @@ nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=
 jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
+
+3.oozie job 실행
+----------------------------------------------------------------------------------------------------------------------------
+
+1. workflow 경로를 HDFS 로 복사
+<pre><code>[root@sandbox-hdp oozielecture]# hadoop fs -put -f practice_04 /user/oozie/workflow/.
+</code></pre>
+
+2. oozie job run CLI command 실행
+<pre><code>[root@sandbox-hdp practice_04]# oozie job -config job.properties -run
+</code></pre>
