@@ -227,7 +227,7 @@ SELECT
 FROM practice.flight_data_tmp WHERE etl_year = '${YEAR}';
 </code></pre>
 
-8.Job Porpreties File(job.properties) 생성
+8.Job Propreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
 oozie.use.system.libpath=true
