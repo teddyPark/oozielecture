@@ -7,6 +7,7 @@ Hive 테이블 생성하기
 [root@sandbox-hdp lecture_01]# beeline 
 beeline> !connect jdbc:hive2://localhost:10000/default  (id : hive / pwd : hive)
 
+<pre><code>
 0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE DATABASE lecture;
 0: jdbc:hive2://sandbox-hdp.hortonworks.com:1> CREATE EXTERNAL TABLE `lecture.u_data` (
   userid INT,
@@ -18,6 +19,7 @@ FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
  LOCATION
    'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
+</code></pre>
 
 ############################################################################################################################
 ############################################################################################################################
