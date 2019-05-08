@@ -224,7 +224,7 @@ SELECT
    nas_delay,
    security_delay,
    late_aircraft_delay
-FROM practice.flight_data_tmp WHERE etl_year = '${YEAR}';
+FROM practice.flight_data_tmp WHERE etl_year = '${ETL_YEAR}';
 </code></pre>
 
 8.Job Propreties File(job.properties) 생성
