@@ -1,0 +1,32 @@
+INSERT OVERWRITE TABLE practice.flight_data_orc 
+PARTITION (year='${YEAR}')
+SELECT
+   month,
+   day,
+   day_of_week,
+   dep_time,
+   crs_dep_time,
+   arr_time,
+   crs_arr_time,
+   unique_carrier,
+   flight_num,
+   tail_num,
+   actual_elapsed_time,
+   crs_elapsed_time,
+   air_time,
+   arr_delay,
+   dep_delay,
+   origin,
+   dest,
+   distance,
+   taxi_in,
+   taxi_out,
+   cancelled, 
+   cancellation_code, 
+   diverted,
+   carrier_delay,
+   weather_delay,
+   nas_delay,
+   security_delay,
+   late_aircraft_delay
+FROM practice.flight_data_tmp WHERE etl_year = '${YEAR}';
