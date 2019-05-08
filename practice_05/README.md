@@ -107,7 +107,7 @@ CREATE TABLE weblogs.access_log_orc(
 4.Library File(lib/load_logfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```sql
---LOAD DATA INPATH '/stage-data/weblogs/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log 
+--LOAD DATA INPATH '/stage-data/weblog/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log 
 --       PARTITION(etl_ymd=${ETL_YMD});
 ALTER TABLE weblogs.access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION  
          '/stage-data/weblog/access/${ETL_YMD}';
