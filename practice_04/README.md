@@ -79,4 +79,4 @@ First Missing Dependency : hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/RI
 
 5.Missing Dependency 처리
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>[root@sandbox-hdp practice_04]# Hadoop fs –touchz /stage-data/RITA_Data/2000/_SUCCESS</code></pre>
+<pre><code>[root@sandbox-hdp practice_04]# hadoop fs -touchz /stage-data/RITA_Data/2000/_SUCCESS</code></pre>
