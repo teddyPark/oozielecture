@@ -60,19 +60,16 @@ CREATE TABLE `weblogs.access_orc`(
    <kill name="Kill">
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
-
    <action name="hive_action_1">
 
      // hive action #1 작성
 
-  </action>
-  
+   </action>
    <action name="hive_action_2">
 
      // hive action #2 작성
 
-  </action>
-
+   </action>
    <end name="end"/>
 </workflow-app>
 ```
