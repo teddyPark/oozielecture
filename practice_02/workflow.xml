@@ -35,7 +35,7 @@
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
            <password>hive</password>
            <script>lib/copy_to_orc.hql</script>
            <param>YEAR=${YEAR}</param>
