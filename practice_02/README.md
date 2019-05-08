@@ -38,18 +38,18 @@
 
 1.File 내용 확인하기
 ------------------------------------------
-<pre><code>cd RITA_Data
-head 2000/2000.csv
+<pre><code>[root@sandbox-hdp stage-data]# cd RITA_Data
+[root@sandbox-hdp RITA_Data]# head 2000/2000.csv
 </code></pre>
 
 2.HDFS 로 업로드 하기
 -----------------------------------------
-<pre><code>hadoop fs -put RITA_Data /stage-data/.
+<pre><code>[root@sandbox-hdp stage-data]# hadoop fs -put RITA_Data /stage-data/.
 </code></pre>
 
 3.file 확인하기
 -------------------------------------------
-<pre><code>hadoop fs -ls -R /stage-data/RITA_Data
+<pre><code>[root@sandbox-hdp stage-data]# hadoop fs -ls -R /stage-data/RITA_Data
 </code></pre>
 
 4.Hive 테이블 생성하기
@@ -135,6 +135,7 @@ head 2000/2000.csv
 
 5.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <workflow-app name="practice_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
@@ -183,6 +184,7 @@ head 2000/2000.csv
 
    <end name="end"/>
 </workflow-app>
+```
 
 6.Library File(lib/load_csvfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
