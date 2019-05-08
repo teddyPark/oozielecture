@@ -61,7 +61,17 @@ CREATE TABLE `weblogs.access_orc`(
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
 
-     // workflow xml 작성
+   <action name="hive_action_1">
+
+     // hive action #1 작성
+
+  </action>
+  
+   <action name="hive_action_2">
+
+     // hive action #2 작성
+
+  </action>
 
    <end name="end"/>
 </workflow-app>
