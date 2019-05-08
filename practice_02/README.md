@@ -267,7 +267,7 @@ http://sandbox-hdp.hortonworks.com:8088/proxy/{yarn application id}/
 
 7. oozie job rerun
 <pre><code>[root@sandbox-hdp practice_02]# oozie job -rerun {job id} -Doozie.wf.rerun.failnodes=true</code></pre>
-<pre><code>[root@sandbox-hdp practice_02]# oozie job -rerun {job id} Doozie.wf.rerun.skip.nodes=,</code></pre>
+<pre><code>[root@sandbox-hdp practice_02]# oozie job -rerun {job id} -Doozie.wf.rerun.skip.nodes=,</code></pre>
 
 8. stage-data file 확인
 <pre><code>[root@sandbox-hdp practice_02]# hadoop fs -ls -R /stage-data/RITA_Data/
