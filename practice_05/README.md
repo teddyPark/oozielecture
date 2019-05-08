@@ -120,8 +120,8 @@ ALTER TABLE weblogs.access_orc DROP IF EXISTS PARTITION (ymd=${YMD});
 
 INSERT OVERWRITE TABLE weblogs.access_log_orc PARTITION (ymd=${YMD})
 SELECT remote_host, remote_logname, remote_user,
-         cast(from_unixtime(UNIX_TIMESTAMP(request_time,'[dd/MMM/yyyy:HH:mm:ss Z]')) as timestamp) as request_time,
-         first_line, http_status, bytes, referer, agent
+       cast(from_unixtime(UNIX_TIMESTAMP(request_time,'[dd/MMM/yyyy:HH:mm:ss Z]')) as timestamp) as request_time,
+       first_line, http_status, bytes, referer, agent
 FROM weblogs.access_log
 WHERE etl_ymd=${YMD};
 ```
