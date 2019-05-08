@@ -1,7 +1,6 @@
 1.Hive 접속하기
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-[root@sandbox-hdp lecture_01]# beeline 
+<pre><code>[root@sandbox-hdp practice_01]# beeline 
 beeline> !connect jdbc:hive2://localhost:10000/default
 Connecting to jdbc:hive2://localhost:10000/default
 Enter username for jdbc:hive2://localhost:10000/default: hive
@@ -17,9 +16,8 @@ Transaction isolation: TRANSACTION_REPEATABLE_READ
 2.Hive 테이블 생성하기
 ----------------------------------------------------------------------------------------------------------------------------
 
-<pre><code>
-CREATE DATABASE lecture; 
-CREATE EXTERNAL TABLE 'lecture.u_data' (
+<pre><code>CREATE DATABASE practice; 
+CREATE EXTERNAL TABLE 'practice.u_data' (
   userid INT,
   movieid INT,
   rating INT,
@@ -27,12 +25,12 @@ CREATE EXTERNAL TABLE 'lecture.u_data' (
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 STORED AS TEXTFILE
-LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db/u_data';
+LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/practice.db/u_data';
 </code></pre>
 
 3.파일 소유자 변경 
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>[root@sandbox-hdp lecture_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
+<pre><code>[root@sandbox-hdp practice_01]# sudo -u hdfs hadoop fs -chown -R hive /stage-data/ml-100k
 </code></pre>
 
 4.Workflow File(workflow.xml) 
@@ -40,7 +38,7 @@ LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workflow-app name="lecture_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+<workflow-app name="practice_01" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="hive_action_1"/>
    <kill name="Kill">
@@ -57,7 +55,7 @@ LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <jdbc-url>jdbc:hive2://localhost:10000/lecture</jdbc-url>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
            <password>hive</password>
            <script>lib/load_datafile.hql</script>
        </hive2>
@@ -69,18 +67,17 @@ LOCATION 'hdfs://sandbox-hdp.hortonworks.com:8020/user/hive/warehouse/lecture.db
 ```
 
 
-
 5.Library File(lib/load_datafile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE lecture.u_data;
+<pre><code>LOAD DATA INPATH '/stage-data/ml-100k/u.data' INTO TABLE practice.u_data;
 </code></pre>
 
 6.Job Porpreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
-TODAY_YMD=20180507
+TODAY_YMD=20190523
 oozie.use.system.libpath=true
-oozie.wf.application.path=${nameNode}/user/oozie/workflow/lecture_01
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_01
 queueName=default
 nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=
@@ -96,7 +93,7 @@ jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
 
 2. job.properties 파일이 있는 경로로 이동.
-<pre><code>cd lecture_01
+<pre><code>cd practice_01
 </code></pre>
 
 3. oozie CLI command 실행
