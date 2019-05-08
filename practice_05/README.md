@@ -41,7 +41,7 @@ CREATE EXTERNAL TABLE weblogs.access(
 
 ```sql
 // new table schema
-CREATE EXTERNAL TABLE IF NOT EXISTS raw_access_log(
+CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.raw_access_log(
   remote_host STRING,
   remote_logname STRING,
   remote_user STRING,
