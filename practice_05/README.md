@@ -30,10 +30,10 @@ CREATE EXTERNAL TABLE IF NOT EXISTS weblogs.access_log(
   agent STRING
 )
 PARTITIONED BY (etl_ymd string)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
 WITH SERDEPROPERTIES (
-  "input.regex" = "([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)",
-  "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s"
+  "input.regex" = "([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*) ([^ ]*) ([^ ]*)",
+  "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s %8$s %9$s"
 );
 
 CREATE TABLE weblogs.access_log_orc(
