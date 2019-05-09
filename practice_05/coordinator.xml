@@ -1,0 +1,30 @@
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" 
+                 frequency="10 0 * * *" start="2018-04-02T00:00+0900" end="2020-12-31T02:00+0900" 
+                 timezone="Asia/Seoul">
+    <controls>
+        <timeout>86400</timeout>
+    </controls>
+    <datasets>
+        <dataset name="data" frequency="1440" initial-instance="2018-04-01T00:00+0900"
+                 timezone="Asia/Seoul">
+            <uri-template>${nameNode}/stage-data/weblogs/access/${YEAR}${MONTH}${DAY}</uri-template>
+            <done-flag>_SUCCESS</done-flag>
+        </dataset>
+    </datasets>
+    <input-events>
+        <data-in name="input" dataset="data">
+           <instance>${coord:current(0)}</instance>
+        </data-in>
+    </input-events>
+    <action>
+        <workflow>
+            <app-path>/user/oozie/workflow/practice_05/workflow.xml</app-path>
+            <configuration>
+                <property>
+                    <name>YMD</name>
+                    <value>${coord:formatTime(coord:nominalTime(),'yyyyMMdd')}</value>
+                </property>
+            </configuration>
+        </workflow>
+    </action>    
+</coordinator-app>
