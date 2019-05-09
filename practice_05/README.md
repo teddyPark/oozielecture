@@ -52,13 +52,55 @@ CREATE TABLE weblogs.access_log_orc(
 
 3.Workflow File(workflow.xml) 
 ----------------------------------------------------------------------------------------------------------------------------
-
-<pre><code>
-
-   // workflow.xml 작성
-   // exam
-
-</code></pre>
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="practice_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+   <action name="hive_action_1">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
+           <password>hive</password>
+           <script>lib/load_logfile.hql</script>
+           <param>ETL_YMD=${YMD}</param>
+       </hive2>
+       <ok to="hive_action_2"/>
+       <error to="Kill"/>
+   </action>
+   <action name="hive_action_2">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/copy_to_orc.hql</script>
+           <param>YMD=${YMD}</param>
+       </hive2>
+       <ok to="end"/>
+       <error to="Kill"/>
+    </action>
+   <end name="end"/>
+</workflow-app>
+```
 
 4.Library File(lib/load_logfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
@@ -84,32 +126,60 @@ WHERE etl_ymd=${YMD};
 
 6.Job Propreties File(workflow-job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-
-   // workflow-job.properties 작성
-   // exam
-
+<pre><code>user.name=mapred
+oozie.use.system.libpath=true
+oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_05
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
+jobTracker=sandbox-hdp.hortonworks.com\:8032
+YMD=20180401
 </code></pre>
 
 
 7.Coordinator File(coordinator.xml) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```xml
-<coordinator-app xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" 
-                 frequency=" " start=" " end=" " timezone=" ">
-
-   // coordinator.xml 작성
-   // exam
-   
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="weblog_coordinator" 
+                 frequency="10 0 * * *" start="2018-04-02T00:00+0900" end="2020-12-31T02:00+0900" 
+                 timezone="Asia/Seoul">
+    <controls>
+        <timeout>86400</timeout>
+    </controls>
+    <datasets>
+        <dataset name="data" frequency="1440" initial-instance="2018-04-01T00:00+0900"
+                 timezone="Asia/Seoul">
+            <uri-template>${nameNode}/stage-data/weblogs/access/${YEAR}${MONTH}${DAY}</uri-template>
+            <done-flag></done-flag>
+        </dataset>
+    </datasets>
+    <input-events>
+        <data-in name="input" dataset="data">
+           <instance>${coord:current(0)}</instance>
+        </data-in>
+    </input-events>
+    <action>
+        <workflow>
+            <app-path>/user/oozie/workflow/practice_05/workflow.xml</app-path>
+            <configuration>
+                <property>
+                    <name>YMD</name>
+                    <value>${coord:formatTime(coord:nominalTime(),'yyyyMMdd')}</value>
+                </property>
+            </configuration>
+        </workflow>
+    </action>    
 </coordinator-app>
 ```
 
 8.Coordinator Job Propreties File(coord-job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>
-
-   // coord-job.properties 작성
-   // exam
-
+<pre><code>user.name=mapred
+oozie.use.system.libpath=true
+oozie.coord.application.path=${nameNode}/user/oozie/workflow/practice_05/coordinator.xml
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=
+jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
 
