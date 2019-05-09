@@ -8,7 +8,7 @@
         <dataset name="data" frequency="1440" initial-instance="2018-04-01T00:00+0900"
                  timezone="Asia/Seoul">
             <uri-template>${nameNode}/stage-data/weblogs/access/${YEAR}${MONTH}${DAY}</uri-template>
-            <done-flag>_SUCCESS</done-flag>
+            <done-flag></done-flag>
         </dataset>
     </datasets>
     <input-events>
