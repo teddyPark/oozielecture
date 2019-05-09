@@ -126,16 +126,13 @@ FROM weblogs.access_log
 WHERE etl_ymd=${YMD};
 ```
 
-6.Job Propreties File(job.properties) 생성
+6.Job Propreties File(workflow-job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
-<pre><code>user.name=mapred
-oozie.use.system.libpath=true
-oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_05
-queueName=default
-nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
-oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
-jobTracker=sandbox-hdp.hortonworks.com\:8032
-YMD=20180401
+<pre><code>
+
+   // workflow-job.properties 작성
+   // exam
+
 </code></pre>
 
 
@@ -146,15 +143,17 @@ YMD=20180401
                  frequency=" " start=" " end=" " timezone=" ">
 
    // coordinator.xml 작성
+   // exam
    
 </coordinator-app>
 ```
 
-8.Coordinator Job Propreties File(coordinator-job.properties) 생성
+8.Coordinator Job Propreties File(coord-job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>
 
-   // coordinator-job.properties 작성
-   
+   // coord-job.properties 작성
+   // exam
+
 </code></pre>
 
