@@ -81,7 +81,6 @@ show create table u_data;
 6.Job Propreties File(job.properties) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
-TODAY_YMD=20190523
 oozie.use.system.libpath=true
 oozie.wf.application.path=${nameNode}/user/oozie/workflow/practice_01
 queueName=default
