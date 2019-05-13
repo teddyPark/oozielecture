@@ -1,8 +1,8 @@
 1.mysql 에 sqoop user 추가 및 권한 설정
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>[root@sandbox-hdp ]# mysql -u root -p (password : hadoop)
-grant all privileges on employees.* to 'sqoop'@'localhost' identified by 'hadoop';
-flush privileges;
+mysql> grant all privileges on employees.* to 'sqoop'@'localhost' identified by 'hadoop';
+mysql> flush privileges;
 </code></pre>
 
 2.beeline 으로 Hive 접속 후 Database 와 Table 만들기
