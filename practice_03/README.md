@@ -90,3 +90,13 @@ nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
 oozie.libpath=/user/oozie/share/lib/lib_20180201102929/sqoop
 jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
+
+6. oozie sharelib update
+<pre><code>[root@sandbox-hdp practice_03]# su oozie
+[oozie@sandbox-hdp practice_03]$ oozie admin -sharelibupdate
+[ShareLib update status]
+	sharelibDirOld = hdfs://sandbox-hdp.hortonworks.com:8020/user/oozie/share/lib/lib_20180201102929
+	host = http://sandbox-hdp.hortonworks.com:11000/oozie
+	sharelibDirNew = hdfs://sandbox-hdp.hortonworks.com:8020/user/oozie/share/lib/lib_20180201102929
+	status = Successful
+</code></pre>
