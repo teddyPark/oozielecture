@@ -46,9 +46,7 @@ LOCATION
                   <value>${queueName}</value>
               </property>
            </configuration>
-           <command>import --connect jdbc:mysql://localhost:3306/employees --driver com.mysql.jdbc.Driver 
-                --username sqoop --password hadoop --table employees --target-dir /stage-data/employees 
-                --split-by 1 --delete-target-dir</command>
+           <command>import --connect jdbc:mysql://localhost:3306/employees --driver com.mysql.jdbc.Driver --username sqoop --password hadoop --table employees --target-dir /stage-data/employees --split-by 1 --delete-target-dir</command>
        </sqoop>
        <ok to="hive_action_1"/>
        <error to="Kill"/>
