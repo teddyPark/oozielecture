@@ -185,13 +185,13 @@
 </workflow-app>
 ```
 
-6.Library File(lib/load_csvfile.hql) 생성
+6.hive_action_1 의 Library File(lib/load_csvfile.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>LOAD DATA INPATH '/stage-data/RITA_Data/${ETL_YEAR}/*.csv' INTO TABLE practice.flight_data_tmp 
 PARTITION(etl_year=${ETL_YEAR});
 </code></pre>
 
-7.Library File(lib/copy_to_orc.hql) 생성
+7.hive_action_2 의 Library File(lib/copy_to_orc.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>INSERT OVERWRITE TABLE practice.flight_data_orc 
 PARTITION (year='${YEAR}')
