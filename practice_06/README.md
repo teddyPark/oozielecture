@@ -20,6 +20,7 @@
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
 
+   
 
    <end name="end"/>
 </workflow-app>   
@@ -45,6 +46,11 @@ SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY ho
             <done-flag>_DONE</done-flag>
         </dataset>
    <datasets>
+      
+   
+      
+</coordinator-app>
+       
 ```   
 
 
