@@ -183,3 +183,26 @@ oozie.libpath=
 jobTracker=sandbox-hdp.hortonworks.com\:8032
 </code></pre>
 
+```xml
+<workflow>
+  <app-path>hdfs://sandbox-hdp.hortonworks.com:8020/user/oozie/workflow/practice_05</app-path>
+  <configuration>
+      <property>
+        <name>input</name>
+        <value>hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/access/20180401</value>
+      </property>
+  </configuration>
+</workflow>
+```
+
+```xml
+<workflow>
+  <app-path>hdfs://sandbox-hdp.hortonworks.com:8020/user/oozie/workflow/practice_05</app-path>
+  <configuration>
+      <property>
+        <name>input</name>
+        <value>hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/access/20180402</value>
+      </property>
+  </configuration>
+</workflow>
+```
