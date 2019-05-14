@@ -53,7 +53,7 @@ SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY ho
        
 ```   
 
-4.Coordinator job properties File(coord-job.properties) 
+5.Coordinator job properties File(coord-job.properties) 
 ----------------------------------------------------------------------------------------------------------------------------
 <pre><code>user.name=mapred
 oozie.use.system.libpath=true
