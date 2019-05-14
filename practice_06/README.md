@@ -1,4 +1,4 @@
-1.Create Table
+1.Hive 테이블 생성하기
 ---------------------------------------------------------------------------------------------------------------------------
 <pre><code>CREATE EXTERNAL TABLE `weblogs.stat_access`(
    `host` string,                                                                       
@@ -8,3 +8,45 @@
  LOCATION                                                                               
    'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/stat_access';  
 </code></pre>
+
+2.Workflow File(workflow.xml) 
+----------------------------------------------------------------------------------------------------------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="lecture_06" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+
+
+   <end name="end"/>
+</workflow-app>   
+```
+
+3.Library File(lib/stat_accesslog.hql)
+---------------------------------------------------------------------------------------------------------------------------
+<pre><code>INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd=${YMD})
+SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY host ORDER BY count DESC;
+</code></pre>
+
+4.Coordinator File(coordinator.xml) 
+----------------------------------------------------------------------------------------------------------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<coordinator-app xmlns:sla="uri:oozie:sla:0.2" xmlns="uri:oozie:coordinator:0.4" name="stat_weblog_coordinator" frequency="10 0 * * *" start="2018-04-01T00:00+0900" end="2020-12-31T02:00+0900" timezone="Asia/Seoul">
+    <controls>
+        <timeout>1440</timeout>
+    </controls>
+   <datasets>
+        <dataset name="data" frequency="1440" initial-instance="2018-04-01T00:00+0900" timezone="Asia/Seoul">
+            <uri-template>hdfs://sandbox-hdp.hortonworks.com/stage-data/weblog/access/${YEAR}${MONTH}${DAY}</uri-template>
+            <done-flag>_DONE</done-flag>
+        </dataset>
+   <datasets>
+```   
+
+
+
+
