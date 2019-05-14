@@ -53,6 +53,15 @@ SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY ho
        
 ```   
 
+4.Coordinator job properties File(coord-job.properties) 
+----------------------------------------------------------------------------------------------------------------------------
+<pre><code>user.name=mapred
+oozie.use.system.libpath=true
+oozie.coord.application.path=${nameNode}/user/oozie/workflow/practice_06/coordinator.xml
+queueName=default
+nameNode=hdfs://sandbox-hdp.hortonworks.com:8020
+oozie.libpath=
+jobTracker=sandbox-hdp.hortonworks.com\:8032
 
-
+</code></pre>
 
