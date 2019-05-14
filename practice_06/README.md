@@ -28,7 +28,7 @@
 
 3.Library File(lib/stat_accesslog.hql)
 ---------------------------------------------------------------------------------------------------------------------------
-<pre><code>INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd=${YMD})
+<pre><code>INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd=${YMD});
 SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY host ORDER BY count DESC;
 </code></pre>
 
