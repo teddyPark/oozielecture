@@ -1,7 +1,7 @@
 1.Bundle File(bundle.xml)
 ----------------------------------------------------------------------------------------------------------------------------
 ```xml
-<bundle-app name='APPNAME' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='uri:oozie:bundle:0.2'>
+<bundle-app name='bundle_weblog_stat' xmlns='uri:oozie:bundle:0.2'>
    <coordinator name="accesslog" enabled="true">
        <app-path>${nameNode}/user/oozie/workflow/practice_05/coordinator.xml</app-path>
    </coordinator>
