@@ -23,8 +23,8 @@ port : 2222
 
 <pre><code>ssh -p 2222 root@sanbox-hdp.hortonworks.com </code></pre>
 
-2. Sandbox-hdp Web terminal 접속(web)
+2. Sandbox-hdp Web terminal 접속(web)   (root/hadoop)
 > http://sandbox-hdp.hortonworks.com:4200/
 
-3. Sandbox-hdp Ambari Dashboard (web)
+3. Sandbox-hdp Ambari Dashboard (web)   (admin/hadoop)
 > http://sandbox-hdp.hortonworks.com:8080
