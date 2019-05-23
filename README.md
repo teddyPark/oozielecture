@@ -21,7 +21,7 @@ host : sandbox-hdp.hortonworks.com
 port : 2222
 </pre>
 
-<pre><code>ssh -p 2222 root@sanbox-hdp.hortonworks.com </code></pre>
+<pre><code>ssh -p 2222 root@sandbox-hdp.hortonworks.com </code></pre>
 
 2. Sandbox-hdp Web terminal 접속(web)   (root/hadoop)
 > http://sandbox-hdp.hortonworks.com:4200/
