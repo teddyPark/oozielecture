@@ -17,7 +17,7 @@ Virtual box 접속하기
 <pre>
 id : root
 password : hadoop
-host : sanbox-hdp.hortonworks.com
+host : sandbox-hdp.hortonworks.com
 port : 2222
 </pre>
 
