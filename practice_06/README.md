@@ -9,21 +9,98 @@
    'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/stat_access';  
 </code></pre>
 
-2.Workflow File(workflow.xml) 
+2.Practice_05/workflow.xml 
 ----------------------------------------------------------------------------------------------------------------------------
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workflow-app name="lecture_06" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+<workflow-app name="practice_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
    <global/>
    <start to="hive_action_1"/>
    <kill name="Kill">
       <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
    </kill>
+   <action name="hive_action_1">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
+           <password>hive</password>
+           <script>lib/load_logfile.hql</script>
+           <param>ETL_YMD=${YMD}</param>
+       </hive2>
+       <ok to="hive_action_2"/>
+       <error to="Kill"/>
+   </action>
+   <action name="hive_action_2">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/default</jdbc-url>
+           <password>hive</password>
+           <script>lib/copy_to_orc.hql</script>
+           <param>YMD=${YMD}</param>
+       </hive2>
+       <ok to="fs_action"/>
+       <error to="Kill"/>
+    </action>
+    <action name="fs_action">
+        <fs>
+            <touchz path="${nameNode}/stage-data/weblogs/access/${YMD}/_DONE"/>
+        </fs>
+        <ok to="end"/>
+        <error to="Kill"/>
+    </action>
+    <end name="end"/>
+</workflow-app>
 
-   
+```
 
+3.Practice_06/workflow.xml 
+----------------------------------------------------------------------------------------------------------------------------
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow-app name="practice_05" xmlns="uri:oozie:workflow:0.5" xmlns:sla="uri:oozie:sla:0.2">
+   <global/>
+   <start to="hive_action_1"/>
+   <kill name="Kill">
+      <message>Action Failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+   </kill>
+   <action name="hive_action_1">
+       <hive2 xmlns="uri:oozie:hive2-action:0.2">
+           <job-tracker>${jobTracker}</job-tracker>
+           <name-node>${nameNode}</name-node>
+           <prepare/>
+           <configuration>
+              <property>
+                  <name>mapred.job.queue.name</name>
+                  <value>${queueName}</value>
+              </property>
+           </configuration>
+           <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
+           <password>hive</password>
+           <script>lib/stat_accesslog.hql</script>
+           <param>ETL_YMD=${YMD}</param>
+       </hive2>
+       <ok to="hive_action_2"/>
+       <error to="Kill"/>
+   </action>
    <end name="end"/>
-</workflow-app>   
+</workflow-app>
+
 ```
 
 3.Library File(lib/stat_accesslog.hql)
