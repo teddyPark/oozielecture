@@ -108,13 +108,13 @@ CREATE TABLE weblogs.access_log_orc(
 --LOAD DATA INPATH '/stage-data/weblog/access/${ETL_YMD}/*.LOG' INTO TABLE weblogs.access_log 
 --       PARTITION(etl_ymd=${ETL_YMD});
 ALTER TABLE weblogs.access_log ADD IF NOT EXISTS PARTITION (etl_ymd='${ETL_YMD}') LOCATION  
-         '/stage-data/weblog/access/${ETL_YMD}';
+         '/stage-data/weblogs/access/${ETL_YMD}';
 ```
 
 5.Library File(lib/copy_to_orc.hql) 생성
 ----------------------------------------------------------------------------------------------------------------------------
 ```sql
-ALTER TABLE weblogs.access_orc DROP IF EXISTS PARTITION (ymd=${YMD});
+ALTER TABLE weblogs.access_log_orc DROP IF EXISTS PARTITION (ymd=${YMD});
 
 INSERT OVERWRITE TABLE weblogs.access_log_orc PARTITION (ymd=${YMD})
 SELECT remote_host, remote_logname, remote_user,
