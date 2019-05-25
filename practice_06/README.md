@@ -93,7 +93,7 @@
            <jdbc-url>jdbc:hive2://localhost:10000/practice</jdbc-url>
            <password>hive</password>
            <script>lib/stat_accesslog.hql</script>
-           <param>ETL_YMD=${YMD}</param>
+           <param>YMD=${YMD}</param>
        </hive2>
        <ok to="hive_action_2"/>
        <error to="Kill"/>
@@ -105,8 +105,8 @@
 
 3.Library File(lib/stat_accesslog.hql)
 ---------------------------------------------------------------------------------------------------------------------------
-<pre><code>INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd=${YMD});
-SELECT host, count(host) AS count FROM access_orc WHERE (ymd=${YMD}) GROUP BY host ORDER BY count DESC;
+<pre><code>INSERT OVERWRITE TABLE weblogs.stat_access PARTITION (ymd='${YMD}')
+    SELECT remote_host, count(remote_host) AS count FROM weblogs.access_log_orc WHERE (ymd='${YMD}') GROUP BY remote_host ORDER BY count DESC;
 </code></pre>
 
 4.Coordinator File(coordinator.xml) 
