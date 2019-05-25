@@ -9,7 +9,7 @@
    'hdfs://sandbox-hdp.hortonworks.com:8020/stage-data/weblogs/stat_access';  
 </code></pre>
 
-2.Practice_05/workflow.xml 
+2.Practice_05/workflow.xml 에 FS action 추가하기
 ----------------------------------------------------------------------------------------------------------------------------
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
